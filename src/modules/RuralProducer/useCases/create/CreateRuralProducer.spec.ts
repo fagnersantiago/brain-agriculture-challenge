@@ -1,4 +1,4 @@
-import { CreateRuralProducerUseCase } from './CreatRuralProducer.UseCase';
+import { CreateRuralProducerUseCase } from './CreateRuralProducer.UseCase';
 
 import { RuralProducerRepositoryInMemory } from '../../repository/inMemory/RuralProducerRepositoryInMemory';
 

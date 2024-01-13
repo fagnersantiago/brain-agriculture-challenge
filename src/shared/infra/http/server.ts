@@ -1,6 +1,6 @@
-import "reflect-metadata";
+import 'reflect-metadata';
+import '../../container';
 import { app } from './app';
-import './modules/shared/container'
 
 const Port = 3333;
 

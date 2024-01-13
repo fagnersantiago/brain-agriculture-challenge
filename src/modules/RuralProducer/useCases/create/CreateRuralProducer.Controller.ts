@@ -1,7 +1,6 @@
-import "reflect-metadata";
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { CreateRuralProducerUseCase } from './CreatRuralProducer.UseCase';
+import { CreateRuralProducerUseCase } from './CreateRuralProducer.UseCase';
 
 class CreateRuralProducerController {
   async handle(request: Request, response: Response): Promise<Response> {

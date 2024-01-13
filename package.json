@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
+    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
     "test": "jest",
     "prisma:generate": "prisma generate"
   },
@@ -30,9 +30,7 @@
     "yarn": "^1.22.21"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.23.7",
-    "@babel/plugin-syntax-decorators": "^7.23.3",
-    "@types/babel__core": "^7.20.5",
+
     "ts-jest": "^29.1.1"
   }
 }

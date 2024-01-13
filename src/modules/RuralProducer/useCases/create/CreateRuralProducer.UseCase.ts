@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { RuralProducer } from '../../infra/prisma/entities/RuralProducer';
 import { IRuralProcucer } from '../../repository/IRuralProcucer';
@@ -8,7 +8,7 @@ import { IRuralProducerDTO } from '../../dto/IRuralProducerDTO';
 class CreateRuralProducerUseCase {
   constructor(
     @inject('RuralProducerRepository')
-    private RuralProducerRepository: IRuralProcucer,
+    private ruralProducerRepository: IRuralProcucer,
   ) {}
 
   async execute({
@@ -23,9 +23,9 @@ class CreateRuralProducerUseCase {
     plantedCrops,
   }: IRuralProducerDTO): Promise<RuralProducer> {
     try {
-     //TODO: validar se cpf e cnpj 
+      //TODO: validar se cpf e cnpj
 
-      const ruralProducerCreted = await this.RuralProducerRepository.create({
+      const ruralProducerCreated = await this.ruralProducerRepository.create({
         producerName,
         cpfCnpj,
         farmName,
@@ -37,9 +37,9 @@ class CreateRuralProducerUseCase {
         plantedCrops,
       });
 
-      return ruralProducerCreted;
+      return ruralProducerCreated;
     } catch (error) {
-      throw new Error("internal error server");
+      console.log(error);
     }
   }
 }

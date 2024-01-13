@@ -1,12 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import 'reflect-metadata';
+import { prisma } from '../infra/prisma';
 import { RuralProducer } from '../infra/prisma/entities/RuralProducer';
 import { IRuralProcucer } from './IRuralProcucer';
-
 import { IRuralProducerDTO } from '../dto/IRuralProducerDTO';
 
 class RuralProducerRepository implements IRuralProcucer {
-  constructor(private prismaService: PrismaClient) {}
-
   async create({
     producerName,
     cpfCnpj,
@@ -18,7 +16,7 @@ class RuralProducerRepository implements IRuralProcucer {
     vegetationArea,
     plantedCrops,
   }: IRuralProducerDTO): Promise<RuralProducer> {
-    const createdRuralProducer = await this.prismaService.ruralProducer.create({
+    const createdRuralProducer = await prisma.ruralProducer.create({
       data: {
         producerName,
         cpfCnpj,
@@ -36,4 +34,4 @@ class RuralProducerRepository implements IRuralProcucer {
   }
 }
 
-export default RuralProducerRepository;
+export { RuralProducerRepository };
