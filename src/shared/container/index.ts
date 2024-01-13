@@ -7,3 +7,7 @@ container.registerSingleton<IRuralProcucer>(
   'RuralProducerRepository',
   RuralProducerRepository,
 );
+container.registerSingleton<IRuralProcucer>(
+  'UpdateRuralProducer',
+  RuralProducerRepository,
+);

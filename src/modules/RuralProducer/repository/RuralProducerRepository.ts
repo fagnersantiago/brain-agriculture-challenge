@@ -32,6 +32,26 @@ class RuralProducerRepository implements IRuralProcucer {
 
     return createdRuralProducer;
   }
+
+  async findById(id: string): Promise<null | RuralProducer> {
+    const ruralProducerExists = await prisma.ruralProducer.findUnique({
+      where: { id },
+    });
+
+    if (!ruralProducerExists) {
+      return null;
+    }
+
+    return ruralProducerExists;
+  }
+
+  async update(data): Promise<RuralProducer> {
+    const ruralProducerUpdated =  await  prisma.ruralProducer.update({
+      where:{ id: data.id},
+      data
+    })
+    return ruralProducerUpdated
+  }
 }
 
 export { RuralProducerRepository };

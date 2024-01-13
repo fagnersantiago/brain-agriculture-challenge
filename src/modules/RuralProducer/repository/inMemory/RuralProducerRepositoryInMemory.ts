@@ -6,7 +6,6 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
   private ruralProducerRepository: RuralProducer[] = [];
 
   async create({
-    
     producerName,
     cpfCnpj,
     farmName,
@@ -18,7 +17,6 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
     plantedCrops,
   }: IRuralProducerDTO): Promise<RuralProducer> {
     const ruralProducerCreted = new RuralProducer(
-  
       producerName,
       cpfCnpj,
       farmName,
@@ -28,14 +26,30 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
       agriculturalArea,
       vegetationArea,
       plantedCrops,
-
-    )
-   
+    );
 
     this.ruralProducerRepository.push(ruralProducerCreted);
     return ruralProducerCreted;
   }
+  async findById(id: string): Promise<RuralProducer> {
+    return await this.ruralProducerRepository.find(find => find.id === id);
+  }
+  async update(data: IRuralProducerDTO): Promise<RuralProducer> {
 
+
+    const updateRuralProducer = await Object.assign(
+      {id: data.id,
+      farmName: data.farmName,
+      city: data.city,
+      state: data.state,
+      totalFarmArea: data.totalFarmArea,
+      agriculturalArea: data.agriculturalArea,
+      vegetationArea: data.vegetationArea,
+      plantedCrops: data.plantedCrops});
+
+
+    return updateRuralProducer;
+  }
 }
 
 export { RuralProducerRepositoryInMemory };
