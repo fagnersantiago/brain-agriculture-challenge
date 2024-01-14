@@ -7,6 +7,7 @@ interface IRuralProcucer {
   create(data: IRuralProducerDTO): Promise<RuralProducer>;
   findById(id: string): Promise<RuralProducer | null>;
   update(data: IUpdateRuralProducerDTO): Promise<RuralProducer>;
+  delete(id: string): Promise<void>;
 }
 
 export { IRuralProcucer };

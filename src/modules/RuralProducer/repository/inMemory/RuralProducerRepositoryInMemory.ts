@@ -49,6 +49,14 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
 
     return updateRuralProducer;
   }
+  async delete(id: string): Promise<void> {
+    const deleted = this.ruralProducerRepository.findIndex(
+      find => find.id === id,
+    );
+    if (deleted >= 0) {
+      this.ruralProducerRepository.slice(deleted, 1);
+    }
+  }
 }
 
 export { RuralProducerRepositoryInMemory };

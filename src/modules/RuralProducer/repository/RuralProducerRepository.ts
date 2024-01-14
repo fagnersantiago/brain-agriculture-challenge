@@ -55,7 +55,11 @@ class RuralProducerRepository implements IRuralProcucer {
     });
     return ruralProducerUpdated;
   }
-  
+async delete(id: string): Promise<void> {
+   await prisma.ruralProducer.delete({
+    where:{id: id }
+  })
+}
 }
 
 export { RuralProducerRepository };
