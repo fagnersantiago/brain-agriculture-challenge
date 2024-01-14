@@ -1,6 +1,7 @@
 import { IRuralProcucer } from '../IRuralProcucer';
 import { IRuralProducerDTO } from '../../dto/IRuralProducerDTO';
 import { RuralProducer } from '../../infra/prisma/entities/RuralProducer';
+import { IUpdateRuralProducerDTO } from '../../dto/IUpdateRuralProducer.DTO';
 
 class RuralProducerRepositoryInMemory implements IRuralProcucer {
   private ruralProducerRepository: RuralProducer[] = [];
@@ -34,19 +35,17 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
   async findById(id: string): Promise<RuralProducer> {
     return await this.ruralProducerRepository.find(find => find.id === id);
   }
-  async update(data: IRuralProducerDTO): Promise<RuralProducer> {
-
-
-    const updateRuralProducer = await Object.assign(
-      {id: data.id,
+  async update(data: IUpdateRuralProducerDTO): Promise<RuralProducer> {
+    const updateRuralProducer = await Object.assign({
+      id: data.id,
       farmName: data.farmName,
       city: data.city,
       state: data.state,
       totalFarmArea: data.totalFarmArea,
       agriculturalArea: data.agriculturalArea,
       vegetationArea: data.vegetationArea,
-      plantedCrops: data.plantedCrops});
-
+      plantedCrops: data.plantedCrops,
+    });
 
     return updateRuralProducer;
   }

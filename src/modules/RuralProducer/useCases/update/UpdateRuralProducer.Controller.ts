@@ -1,21 +1,22 @@
-import { Request, Response } from "express";
-import { container } from "tsyringe";
-import { UpdateRuralProducer } from "./UpdateRuralProducer.UseCase";
+import { Request, Response } from 'express';
+import { container } from 'tsyringe';
+import { UpdateRuralProducer } from './UpdateRuralProducer.UseCase';
 
-class UpdatePlaceController {
+class UpdateProducerController {
   async handle(request: Request, response: Response): Promise<Response> {
+    console.log(request.params);
     const { data } = request.body;
     const { id } = request.params;
 
     const updateRuralProducerUseCase = container.resolve(UpdateRuralProducer);
 
     const update = await updateRuralProducerUseCase.execute({
-          id,
-        ...data
+      id,
+      ...data,
     });
 
     return response.status(201).json(update);
   }
 }
 
-export default UpdatePlaceController;
+export { UpdateProducerController };

@@ -3,6 +3,7 @@ import { prisma } from '../infra/prisma';
 import { RuralProducer } from '../infra/prisma/entities/RuralProducer';
 import { IRuralProcucer } from './IRuralProcucer';
 import { IRuralProducerDTO } from '../dto/IRuralProducerDTO';
+import { IUpdateRuralProducerDTO } from '../dto/IUpdateRuralProducer.DTO';
 
 class RuralProducerRepository implements IRuralProcucer {
   async create({
@@ -34,24 +35,27 @@ class RuralProducerRepository implements IRuralProcucer {
   }
 
   async findById(id: string): Promise<null | RuralProducer> {
+    
     const ruralProducerExists = await prisma.ruralProducer.findUnique({
       where: { id },
     });
 
-    if (!ruralProducerExists) {
+    if (!ruralProducerExists || undefined) {
       return null;
     }
 
     return ruralProducerExists;
   }
-
-  async update(data): Promise<RuralProducer> {
-    const ruralProducerUpdated =  await  prisma.ruralProducer.update({
-      where:{ id: data.id},
-      data
-    })
-    return ruralProducerUpdated
+  
+  async update(data: IUpdateRuralProducerDTO): Promise<RuralProducer> {
+   
+    const ruralProducerUpdated = await prisma.ruralProducer.update({
+      where: { id: data.id }, 
+      data: data, 
+    });
+    return ruralProducerUpdated;
   }
+  
 }
 
 export { RuralProducerRepository };
