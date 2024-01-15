@@ -1,4 +1,5 @@
 
+import { AppError } from "../../../../shared/error/AppError";
 import { RuralProducerRepositoryInMemory } from "../../repository/inMemory/RuralProducerRepositoryInMemory";
 import { UpdateRuralProducer } from "./UpdateRuralProducer.UseCase";
 
@@ -65,7 +66,7 @@ describe("Unit test Update Rural producer", () => {
         plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
       });
     } catch (error) {
-      expect(error).toBeInstanceOf("RuralProducer not Found!");
+      expect(error).toBeInstanceOf(AppError);
     }
   });
 });

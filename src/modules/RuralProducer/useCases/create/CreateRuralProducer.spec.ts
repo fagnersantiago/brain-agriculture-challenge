@@ -1,6 +1,8 @@
 import { CreateRuralProducerUseCase } from './CreateRuralProducer.UseCase';
 import { RuralProducerRepositoryInMemory } from '../../repository/inMemory/RuralProducerRepositoryInMemory';
 import { isValidCpfCnpj } from '../../../../shared/utils/IsValidCpfCnpj';
+import { AppError } from '../../../../shared/error/AppError';
+
 
 let createRuralProducer: CreateRuralProducerUseCase;
 let createRuralProducerRepositoryInMemory: RuralProducerRepositoryInMemory;
@@ -37,7 +39,7 @@ describe('Unit test create Producer Use Case', () => {
     try {
       var invalidCnpj = '12345678901234';
     } catch (error) {
-      expect(() => isValidCpfCnpj(invalidCnpj)).toThrow('Invalid cpf or cnpj');
+      expect(() => isValidCpfCnpj(invalidCnpj)).toBeInstanceOf(AppError);
     }
   });
 
@@ -45,7 +47,7 @@ describe('Unit test create Producer Use Case', () => {
     try {
       var invalidCpf = '1234567890';
     } catch (error) {
-      expect(() => isValidCpfCnpj(invalidCpf)).toBe('Invalid cpf or cnpj');
+      expect(() => isValidCpfCnpj(invalidCpf)).toBeInstanceOf(AppError)
     }
   });
 
@@ -65,7 +67,7 @@ describe('Unit test create Producer Use Case', () => {
   
        await createRuralProducer.execute(sut);
     } catch (error)  {
-      expect(error).toThrow('The sum Agritcultral Area and vegetion cannot be greate than total area of the farm');
+      expect(error).toBeInstanceOf(AppError);
     }
   });
 });

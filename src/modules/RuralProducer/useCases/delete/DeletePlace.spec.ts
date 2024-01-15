@@ -1,5 +1,6 @@
 import { DeleteRuralPrdducerUseCase } from "./DeleteRuralPrdducer.UseCase";
 import { RuralProducerRepositoryInMemory } from "../../repository/inMemory/RuralProducerRepositoryInMemory";
+import { AppError } from "../../../../shared/error/AppError";
 
 let deleteProducerUseCase: DeleteRuralPrdducerUseCase;
 let repositoryInMemory: RuralProducerRepositoryInMemory;
@@ -38,7 +39,7 @@ describe("Unit Test delete Rural Producer", () => {
       await deleteProducerUseCase.execute("non-existing-id")
      
      } catch (error) {
-      expect(error).toBeInstanceOf("producer not found!");
+      expect(error).toBeInstanceOf(AppError);
      }
   });
 });

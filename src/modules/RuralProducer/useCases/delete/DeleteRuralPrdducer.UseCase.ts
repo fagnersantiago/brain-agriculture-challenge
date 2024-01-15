@@ -1,25 +1,26 @@
-import "reflect-metadata";
-import { inject, injectable } from "tsyringe";
-import { IRuralProcucer } from "../../repository/IRuralProcucer";
+import 'reflect-metadata';
+import { inject, injectable } from 'tsyringe';
+import { IRuralProcucer } from '../../repository/IRuralProcucer';
+import { AppError } from '../../../../shared/error/AppError';
 
 @injectable()
 class DeleteRuralPrdducerUseCase {
   constructor(
-    @inject("DeleteProducer")
-    private deleteProducerRepository: IRuralProcucer
+    @inject('DeleteProducer')
+    private deleteProducerRepository: IRuralProcucer,
   ) {}
 
   async execute(id: string): Promise<void> {
     try {
       const producerExists = await this.deleteProducerRepository.findById(id);
- 
+
       if (!producerExists) {
-        throw new Error("producer not found!");
+        throw new AppError('Producer not found!');
       }
 
       await this.deleteProducerRepository.delete(id);
     } catch (error) {
-      console.log(error)
+      throw new AppError(error);
     }
   }
 }
