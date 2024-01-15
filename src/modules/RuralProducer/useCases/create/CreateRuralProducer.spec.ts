@@ -5,7 +5,7 @@ import { isValidCpfCnpj } from '../../../../shared/utils/IsValidCpfCnpj';
 let createRuralProducer: CreateRuralProducerUseCase;
 let createRuralProducerRepositoryInMemory: RuralProducerRepositoryInMemory;
 
-describe('Unit test create Place Use Case', () => {
+describe('Unit test create Producer Use Case', () => {
   beforeEach(() => {
     createRuralProducerRepositoryInMemory =
       new RuralProducerRepositoryInMemory();
@@ -16,12 +16,13 @@ describe('Unit test create Place Use Case', () => {
 
   it('should be to create a new RuralProducer', async () => {
     const sut = {
+ 
       producerName: 'John doe',
       cpfCnpj: '12345678915415',
       farmName: 'FAKE FARM',
       city: 'FAKE CITY',
       state: 'FAKE STATE',
-      totalFarmArea: 100,
+      totalFarmArea: 400,
       agriculturalArea: 100,
       vegetationArea: 100,
       plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
@@ -45,6 +46,26 @@ describe('Unit test create Place Use Case', () => {
       var invalidCpf = '1234567890';
     } catch (error) {
       expect(() => isValidCpfCnpj(invalidCpf)).toBe('Invalid cpf or cnpj');
+    }
+  });
+
+  it('should be throw if sum of agricutural area and vegatation greater than total area of farm', async () => {
+    try {
+      const sut = {
+        producerName: 'John doe',
+        cpfCnpj: '12345678915415',
+        farmName: 'FAKE FARM',
+        city: 'FAKE CITY',
+        state: 'FAKE STATE',
+        totalFarmArea: 100,
+        agriculturalArea: 200,
+        vegetationArea: 100,
+        plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
+      };
+  
+       await createRuralProducer.execute(sut);
+    } catch (error)  {
+      expect(error).toThrow('The sum Agritcultral Area and vegetion cannot be greate than total area of the farm');
     }
   });
 });

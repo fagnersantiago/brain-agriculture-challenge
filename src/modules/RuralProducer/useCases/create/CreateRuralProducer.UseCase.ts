@@ -38,6 +38,10 @@ class CreateRuralProducerUseCase {
         throw new Error("Invalid cpf or cnpj")
       }
 
+      if(agriculturalArea + vegetationArea > totalFarmArea) {
+         throw new Error("The sum Agritcultral Area and vegetion cannot be greate than total area of the farm")
+      }
+
       const ruralProducerCreated = await this.ruralProducerRepository.create({
         producerName,
         cpfCnpj,
