@@ -11,8 +11,8 @@ datasource db {
 }
 
 model RuralProducer {
-  id               String   @id @unique @default(uuid())
-  cpfCnpj          String
+  id               String   @id  @default(uuid())
+  cpfCnpj          String   @unique
   producerName     String
   farmName         String
   city             String

@@ -35,6 +35,10 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
   async findById(id: string): Promise<RuralProducer> {
     return await this.ruralProducerRepository.find(find => find.id === id);
   }
+  
+  async findByCpfCnpj(cpfCnpj: string): Promise<RuralProducer> {
+    return await this.ruralProducerRepository.find(find => find.cpfCnpj === cpfCnpj);
+  }
   async update(data: IUpdateRuralProducerDTO): Promise<RuralProducer> {
     const updateRuralProducer = await Object.assign({
       id: data.id,

@@ -27,15 +27,13 @@ class CreateRuralProducerUseCase {
   }: IRuralProducerDTO): Promise<RuralProducer> {
     try {
       
-      const producerExists = await this.ruralProducerRepository.findById(id)
+      const producerExists = await this.ruralProducerRepository.findByCpfCnpj(cpfCnpj)
      
       if(producerExists) {
         throw new AppError("Producer already exists")
       }
 
-      const isValidFormatCpfCnpj = isValidCpfCnpj(cpfCnpj)
-
-      if(!isValidFormatCpfCnpj) {
+      if(!isValidCpfCnpj(cpfCnpj)) {
         throw new AppError("Invalid cpf or cnpj")
       }
 

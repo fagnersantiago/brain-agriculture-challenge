@@ -34,6 +34,17 @@ class RuralProducerRepository implements IRuralProcucer {
     return createdRuralProducer;
   }
 
+  async findByCpfCnpj(cpfCnpj: string): Promise<RuralProducer| null> {
+    const ruralProducerExists = await prisma.ruralProducer.findUnique({
+      where: { cpfCnpj: cpfCnpj },
+    });
+
+    if (!ruralProducerExists || undefined) {
+      return null;
+    }
+
+    return ruralProducerExists;
+  }
   async findById(id: string): Promise<null | RuralProducer> {
     const ruralProducerExists = await prisma.ruralProducer.findUnique({
       where: { id },

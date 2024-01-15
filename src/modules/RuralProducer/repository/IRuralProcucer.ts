@@ -8,6 +8,7 @@ interface IRuralProcucer {
   findById(id: string): Promise<RuralProducer | null>;
   update(data: IUpdateRuralProducerDTO): Promise<RuralProducer>;
   delete(id: string): Promise<void>;
+  findByCpfCnpj(cpfCnpj: string): Promise<RuralProducer | null>;
 }
 
 export { IRuralProcucer };
