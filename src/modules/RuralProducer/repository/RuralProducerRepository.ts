@@ -35,7 +35,6 @@ class RuralProducerRepository implements IRuralProcucer {
   }
 
   async findById(id: string): Promise<null | RuralProducer> {
-    
     const ruralProducerExists = await prisma.ruralProducer.findUnique({
       where: { id },
     });
@@ -46,20 +45,19 @@ class RuralProducerRepository implements IRuralProcucer {
 
     return ruralProducerExists;
   }
-  
+
   async update(data: IUpdateRuralProducerDTO): Promise<RuralProducer> {
-   
     const ruralProducerUpdated = await prisma.ruralProducer.update({
-      where: { id: data.id }, 
-      data: data, 
+      where: { id: data.id },
+      data: data,
     });
     return ruralProducerUpdated;
   }
-async delete(id: string): Promise<void> {
-   await prisma.ruralProducer.delete({
-    where:{id: id }
-  })
-}
+  async delete(id: string): Promise<void> {
+    await prisma.ruralProducer.delete({
+      where: { id: id },
+    });
+  }
 }
 
 export { RuralProducerRepository };

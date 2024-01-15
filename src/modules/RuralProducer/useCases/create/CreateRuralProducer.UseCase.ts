@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { RuralProducer } from '../../infra/prisma/entities/RuralProducer';
 import { IRuralProcucer } from '../../repository/IRuralProcucer';
 import { IRuralProducerDTO } from '../../dto/IRuralProducerDTO';
+import { isValidCpfCnpj } from '../../../../shared/utils/IsValidCpfCnpj';
 
 @injectable()
 class CreateRuralProducerUseCase {
@@ -12,6 +13,7 @@ class CreateRuralProducerUseCase {
   ) {}
 
   async execute({
+    id,
     producerName,
     cpfCnpj,
     farmName,
@@ -23,7 +25,18 @@ class CreateRuralProducerUseCase {
     plantedCrops,
   }: IRuralProducerDTO): Promise<RuralProducer> {
     try {
-      //TODO: validar se cpf e cnpj
+      
+      const producerExists = await this.ruralProducerRepository.findById(id)
+     
+      if(producerExists) {
+        throw new Error("Producer already exists")
+      }
+
+      const isValidFormatCpfCnpj = isValidCpfCnpj(cpfCnpj)
+
+      if(!isValidFormatCpfCnpj) {
+        throw new Error("Invalid cpf or cnpj")
+      }
 
       const ruralProducerCreated = await this.ruralProducerRepository.create({
         producerName,

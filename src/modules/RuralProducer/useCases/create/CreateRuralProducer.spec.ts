@@ -1,6 +1,6 @@
 import { CreateRuralProducerUseCase } from './CreateRuralProducer.UseCase';
-
 import { RuralProducerRepositoryInMemory } from '../../repository/inMemory/RuralProducerRepositoryInMemory';
+import { isValidCpfCnpj } from '../../../../shared/utils/IsValidCpfCnpj';
 
 let createRuralProducer: CreateRuralProducerUseCase;
 let createRuralProducerRepositoryInMemory: RuralProducerRepositoryInMemory;
@@ -29,6 +29,22 @@ describe('Unit test create Place Use Case', () => {
 
     const created = await createRuralProducer.execute(sut);
 
-    expect(created.id).toBeTruthy()
+    expect(created.id).toBeTruthy();
+  });
+
+  it('should be throw if invalid cnpj', async () => {
+    try {
+      var invalidCnpj = '12345678901234';
+    } catch (error) {
+      expect(() => isValidCpfCnpj(invalidCnpj)).toThrow('Invalid cpf or cnpj');
+    }
+  });
+
+  it('should be throw if invalid cpf', async () => {
+    try {
+      var invalidCpf = '1234567890';
+    } catch (error) {
+      expect(() => isValidCpfCnpj(invalidCpf)).toBe('Invalid cpf or cnpj');
+    }
   });
 });
