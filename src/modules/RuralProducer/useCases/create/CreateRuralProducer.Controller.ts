@@ -28,8 +28,9 @@ class CreateRuralProducerController {
       agriculturalArea,
       vegetationArea,
       plantedCrops,
-    });
 
+    });
+ 
     return response.status(201).json(ruralProducer);
   }
 }

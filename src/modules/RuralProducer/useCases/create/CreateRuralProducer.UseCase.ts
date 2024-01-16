@@ -1,16 +1,17 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { RuralProducer } from '../../infra/prisma/entities/RuralProducer';
-import { IRuralProcucer } from '../../repository/IRuralProcucer';
+import { IRuralProducer } from '../../repository/IRuralProducer';
 import { IRuralProducerDTO } from '../../dto/IRuralProducerDTO';
 import { isValidCpfCnpj } from '../../../../shared/utils/IsValidCpfCnpj';
 import { AppError } from '../../../../shared/error/AppError';
+
 
 @injectable()
 class CreateRuralProducerUseCase {
   constructor(
     @inject('RuralProducerRepository')
-    private ruralProducerRepository: IRuralProcucer,
+    private ruralProducerRepository: IRuralProducer,
   ) {}
 
   async execute({
@@ -23,8 +24,8 @@ class CreateRuralProducerUseCase {
     totalFarmArea,
     agriculturalArea,
     vegetationArea,
-    plantedCrops,
-  }: IRuralProducerDTO): Promise<RuralProducer> {
+    plantedCrops
+  }: IRuralProducerDTO,  ): Promise<RuralProducer> {
     try {
       
       const producerExists = await this.ruralProducerRepository.findByCpfCnpj(cpfCnpj)
@@ -49,13 +50,15 @@ class CreateRuralProducerUseCase {
         state,
         totalFarmArea,
         agriculturalArea,
-        vegetationArea,
-        plantedCrops,
-      });
+        vegetationArea, 
+        plantedCrops
+      
+      }
+      );
 
       return ruralProducerCreated;
     } catch (error) {
-      throw new AppError(error)
+    throw new AppError(error)
     }
   }
 }

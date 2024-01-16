@@ -1,25 +1,25 @@
 import "reflect-metadata";
 import { container } from 'tsyringe';
-import { IRuralProcucer } from "../../modules/RuralProducer/repository/IRuralProcucer";
+import { IRuralProducer } from "../../modules/RuralProducer/repository/IRuralProducer";
 import { RuralProducerRepository } from "../../modules/RuralProducer/repository/RuralProducerRepository";
 
 
-container.registerSingleton<IRuralProcucer>(
+container.registerSingleton<IRuralProducer>(
   'RuralProducerRepository',
   RuralProducerRepository,
 );
-container.registerSingleton<IRuralProcucer>(
+container.registerSingleton<IRuralProducer>(
   'UpdateRuralProducer',
   RuralProducerRepository,
 );
 
-container.registerSingleton<IRuralProcucer>(
+container.registerSingleton<IRuralProducer>(
   'DeleteProducer',
   RuralProducerRepository,
 );
 
 
-container.registerSingleton<IRuralProcucer>(
+container.registerSingleton<IRuralProducer>(
   'ListDataDashbordProducer',
   RuralProducerRepository,
 );

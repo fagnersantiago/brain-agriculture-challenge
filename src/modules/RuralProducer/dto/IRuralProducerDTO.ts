@@ -1,3 +1,5 @@
+
+
 interface IRuralProducerDTO {
   id?: string
   cpfCnpj: string
@@ -5,7 +7,7 @@ interface IRuralProducerDTO {
   farmName: string
   city: string
   state: string
-  totalFarmArea: number
+  totalFarmArea: number 
   agriculturalArea: number
   vegetationArea: number
   plantedCrops: string[]

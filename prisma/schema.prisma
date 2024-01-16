@@ -11,8 +11,8 @@ datasource db {
 }
 
 model RuralProducer {
-  id               String   @id  @default(uuid())
-  cpfCnpj          String   @unique
+  id               String @id @default(uuid())
+  cpfCnpj          String @unique
   producerName     String
   farmName         String
   city             String
@@ -20,7 +20,16 @@ model RuralProducer {
   totalFarmArea    Int
   agriculturalArea Int
   vegetationArea   Int
-  plantedCrops     String[]
+  plantedCrops     Crop[]
 
   @@map("ruralProducer")
+}
+
+model Crop {
+  id                String        @id @default(uuid())
+  plantedCrops      String[]
+  id_rural_producer String
+  producer          RuralProducer @relation(fields: [id_rural_producer], references: [id])
+
+  @@map("crop")
 }

@@ -2,6 +2,8 @@ import { CreateRuralProducerUseCase } from './CreateRuralProducer.UseCase';
 import { RuralProducerRepositoryInMemory } from '../../repository/inMemory/RuralProducerRepositoryInMemory';
 import { isValidCpfCnpj } from '../../../../shared/utils/IsValidCpfCnpj';
 import { AppError } from '../../../../shared/error/AppError';
+import { cropsPlanted } from '../../dto/ICropsDto';
+
 
 
 let sut: CreateRuralProducerUseCase;
@@ -17,6 +19,7 @@ describe('Unit test create Producer Use Case', () => {
   });
 
   it('should be to create a new RuralProducer', async () => {
+  
     const producer = {
  
       producerName: 'John doe',
@@ -27,11 +30,11 @@ describe('Unit test create Producer Use Case', () => {
       totalFarmArea: 400,
       agriculturalArea: 100,
       vegetationArea: 100,
-      plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
+      plantedCrops: [cropsPlanted.ALGODÃO] ,
     };
 
     const created = await sut.execute(producer);
-
+  
     expect(created.id).toBeTruthy();
   });
 
@@ -53,6 +56,7 @@ describe('Unit test create Producer Use Case', () => {
 
   it('should be throw if sum of agricutural area and vegatation greater than total area of farm', async () => {
     try {
+    
       const producer = {
         producerName: 'John doe',
         cpfCnpj: '12345678915415',
@@ -62,7 +66,7 @@ describe('Unit test create Producer Use Case', () => {
         totalFarmArea: 100,
         agriculturalArea: 200,
         vegetationArea: 100,
-        plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
+        plantedCrops: [cropsPlanted.ALGODÃO, cropsPlanted.CANA_DE_AÇUCAR],
       };
   
        await sut.execute(producer);

@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import { IRuralProcucer } from '../../repository/IRuralProcucer';
+import { IRuralProducer } from '../../repository/IRuralProducer';
 import { AppError } from '../../../../shared/error/AppError';
 
 @injectable()
 class ListDashboardTotalProducerUseCase {
   constructor(
     @inject('ListDataDashbordProducer')
-    private ruralProducerRepository: IRuralProcucer,
+    private ruralProducerRepository: IRuralProducer,
   ) {}
 
   async execute() {
@@ -18,20 +18,19 @@ class ListDashboardTotalProducerUseCase {
         throw new AppError('Not found');
       }
 
-      const totalFarm = await this.ruralProducerRepository.calculateTotalFarmArea()
-      const totalHectareFarm = await this.ruralProducerRepository.calculateTotalHectare()
-      const totalCrops = await this.ruralProducerRepository.calculateTotalCropsCount()
-  
+      const totalFarms = await this.ruralProducerRepository.calculateTotalFarms();
+      const totalHectareFarm = await this.ruralProducerRepository.calculateTotalHectare();
+      const totalCrops = await this.ruralProducerRepository.calculateTotalCrops();
+      const soilUsed = await this.ruralProducerRepository.calculateSoilUsed();
 
       return {
-
-        totalFarm,
+        totalFarms,
         totalHectareFarm,
         totalCrops,
-        
+        soilUsed,
       };
     } catch (error) {
-      throw new AppError(error);
+      throw new AppError(error)
     }
   }
 }

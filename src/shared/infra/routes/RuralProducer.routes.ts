@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import CreateRuralProducerController from '../../../modules/RuralProducer/useCases/create/CreateRuralProducer.Controller';
 import { UpdateProducerController } from '../../../modules/RuralProducer/useCases/update/UpdateRuralProducer.Controller';
-import { DeleteRuralProducerController } from '../../../modules/RuralProducer/useCases/delete/DeleteRuralPrdducer.Controller';
+import { DeleteRuralProducerController } from '../../../modules/RuralProducer/useCases/delete/DeleteRuralProducer.Controller';
 import ListDashboradTotalProducerController from '../../../modules/RuralProducer/useCases/listDashboardTotal/ListDashboardTotal.Controller';
 
 const ruralProducerRouter = Router();

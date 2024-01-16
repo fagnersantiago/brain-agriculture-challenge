@@ -39,7 +39,7 @@ describe("Unit test Update Rural producer", () => {
       totalFarmArea: 200,
       agriculturalArea: 200,
       vegetationArea: 100,
-      plantedCrops: ruralProducer.plantedCrops,
+      plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
 
     });
     

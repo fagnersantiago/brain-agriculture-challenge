@@ -1,10 +1,13 @@
-import { IRuralProcucer } from '../IRuralProcucer';
+import { IRuralProducer } from '../IRuralProducer';
 import { IRuralProducerDTO } from '../../dto/IRuralProducerDTO';
 import { RuralProducer } from '../../infra/prisma/entities/RuralProducer';
 import { IUpdateRuralProducerDTO } from '../../dto/IUpdateRuralProducer.DTO';
+import { Crop } from '../../infra/prisma/entities/Crop';
 
-class RuralProducerRepositoryInMemory implements IRuralProcucer {
+
+class RuralProducerRepositoryInMemory implements IRuralProducer {
   private ruralProducerRepository: RuralProducer[] = [];
+  private cropRepository: Crop[]=[]
 
   async create({
     producerName,
@@ -15,9 +18,9 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
     totalFarmArea,
     agriculturalArea,
     vegetationArea,
-    plantedCrops,
+    plantedCrops
   }: IRuralProducerDTO): Promise<RuralProducer> {
-    const ruralProducerCreted = new RuralProducer(
+    const ruralProducer = new RuralProducer(
       producerName,
       cpfCnpj,
       farmName,
@@ -29,10 +32,16 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
       plantedCrops,
     );
 
-    this.ruralProducerRepository.push(ruralProducerCreted);
-    return ruralProducerCreted;
-  }
+    const crop = new Crop(
+     ruralProducer.plantedCrops,
+     ruralProducer.id
+    )
+   this.ruralProducerRepository.push(ruralProducer);
+   this.cropRepository.push(crop)
   
+   return    {... ruralProducer, ...crop }
+  }
+
   async findById(id: string): Promise<RuralProducer> {
     return await this.ruralProducerRepository.find(find => find.id === id);
   }
@@ -73,7 +82,7 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
     }
   }
 
-  async calculateTotalCropsCount(): Promise<number> {
+  async calculateTotalCrops(): Promise<number> {
     const totalCropsCount = this.ruralProducerRepository.reduce((acc, farm) => {
       return acc + farm.plantedCrops.length;
     }, 0);
@@ -81,14 +90,6 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
     return totalCropsCount;
   }
 
-  async calculateTotalFarmArea(): Promise<number> {
-    const totalFarm = this.ruralProducerRepository.reduce(
-      (total, farm) => total + farm.totalFarmArea,
-      0,
-    );
-
-    return totalFarm;
-  }
 
   async calculateTotalHectare(): Promise<number> {
     const totalHectareFarm = this.ruralProducerRepository.reduce(
@@ -97,6 +98,34 @@ class RuralProducerRepositoryInMemory implements IRuralProcucer {
     );
 
     return totalHectareFarm;
+  }
+  
+   
+
+  async calculateTotalFarms():Promise<number> {
+    const totalFarm = this.ruralProducerRepository.reduce(
+      (total, farm) => total + farm.totalFarmArea,
+      0,
+    );
+
+    return totalFarm;
+  }
+  
+  async calculateSoilUsed(): Promise<object> {
+
+    const usedSoilQuantity = this.ruralProducerRepository.filter((filter) => {
+      return filter.plantedCrops
+    
+    })
+    const countCulture: Record<string, { total: number }> = usedSoilQuantity.reduce((acc, { plantedCrops }) => {
+      plantedCrops.forEach((value) => {
+        acc[value] = { total: (acc[value]?.total || 0) + 1 };
+      });
+      return acc;
+    }, {});
+    
+
+    return countCulture;
   }
 }
 

@@ -1,4 +1,4 @@
-import { DeleteRuralPrdducerUseCase } from "./DeleteRuralPrdducer.UseCase";
+import { DeleteRuralPrdducerUseCase } from "./DeleteRuralProducer.UseCase";
 import { RuralProducerRepositoryInMemory } from "../../repository/inMemory/RuralProducerRepositoryInMemory";
 import { AppError } from "../../../../shared/error/AppError";
 

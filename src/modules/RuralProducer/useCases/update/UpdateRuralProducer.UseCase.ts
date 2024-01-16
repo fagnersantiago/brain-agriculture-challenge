@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { RuralProducer } from '../../infra/prisma/entities/RuralProducer';
-import { IRuralProcucer } from '../../repository/IRuralProcucer';
+import { IRuralProducer } from '../../repository/IRuralProducer';
 import { IUpdateRuralProducerDTO } from '../../dto/IUpdateRuralProducer.DTO';
 import { AppError } from '../../../../shared/error/AppError';
 
@@ -9,7 +9,7 @@ import { AppError } from '../../../../shared/error/AppError';
 class UpdateRuralProducer {
   constructor(
     @inject('UpdateRuralProducer')
-    private ruralproducerRepository: IRuralProcucer,
+    private ruralproducerRepository: IRuralProducer,
   ) {}
 
   async execute(data: IUpdateRuralProducerDTO): Promise<RuralProducer> {
@@ -24,9 +24,9 @@ class UpdateRuralProducer {
 
       const update = await this.ruralproducerRepository.update(data);
 
-      return update;
+      return { ...update, ...data};
     } catch (error) {
-      throw new AppError(error);
+      throw new AppError(error)
     }
   }
 }

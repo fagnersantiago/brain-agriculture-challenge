@@ -1,6 +1,5 @@
 import { ListDashboardTotalProducerUseCase } from './ListDashboardTotal.UseCase';
 import { RuralProducerRepositoryInMemory } from '../../repository/inMemory/RuralProducerRepositoryInMemory';
-import { AppError } from '../../../../shared/error/AppError';
 
 
 let listRuralProducer: ListDashboardTotalProducerUseCase;
@@ -61,9 +60,10 @@ describe('Unit test list all Producer Use Case', () => {
 
      const producers =  await listRuralProducer.execute()
  
-    expect(producers.totalFarm).toBeGreaterThan(400)
+    expect(producers.totalFarms).toBeGreaterThan(400)
     expect(producers.totalHectareFarm).toBeGreaterThan(100)
     expect(producers.totalCrops).toBeGreaterThan(1)
+    expect(producers.soilUsed).toBeDefined()
 
   });
 
