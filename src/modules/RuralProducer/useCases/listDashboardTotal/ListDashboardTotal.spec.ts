@@ -1,0 +1,71 @@
+import { ListDashboardTotalProducerUseCase } from './ListDashboardTotal.UseCase';
+import { RuralProducerRepositoryInMemory } from '../../repository/inMemory/RuralProducerRepositoryInMemory';
+import { AppError } from '../../../../shared/error/AppError';
+
+
+let listRuralProducer: ListDashboardTotalProducerUseCase;
+let createRuralProducerRepositoryInMemory: RuralProducerRepositoryInMemory;
+
+describe('Unit test list all Producer Use Case', () => {
+  beforeEach(() => {
+    createRuralProducerRepositoryInMemory =
+      new RuralProducerRepositoryInMemory();
+      listRuralProducer = new ListDashboardTotalProducerUseCase(
+      createRuralProducerRepositoryInMemory,
+    );
+  });
+
+  it('should be to create a new RuralProducer', async () => {
+    const producer1 = {
+ 
+      producerName: 'John doe 1',
+      cpfCnpj: '12345678915414',
+      farmName: 'FAKE FARM',
+      city: 'FAKE CITY',
+      state: 'FAKE STATE',
+      totalFarmArea: 400,
+      agriculturalArea: 100,
+      vegetationArea: 100,
+      plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
+    };
+    const producer2 = {
+ 
+        producerName: 'John doe 2',
+        cpfCnpj: '12345678915415',
+        farmName: 'FAKE FARM',
+        city: 'FAKE CITY',
+        state: 'FAKE STATE',
+        totalFarmArea: 400,
+        agriculturalArea: 100,
+        vegetationArea: 100,
+        plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
+      };
+      const producer3 = {
+ 
+        producerName: 'John doe3',
+        cpfCnpj: '12345678915416',
+        farmName: 'FAKE FARM',
+        city: 'FAKE CITY',
+        state: 'FAKE STATE',
+        totalFarmArea: 400,
+        agriculturalArea: 100,
+        vegetationArea: 100,
+        plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
+      };
+    
+
+   await createRuralProducerRepositoryInMemory.create(producer1)
+   await createRuralProducerRepositoryInMemory.create(producer2)
+   await createRuralProducerRepositoryInMemory.create(producer3)
+
+
+     const producers =  await listRuralProducer.execute()
+ 
+    expect(producers.totalFarm).toBeGreaterThan(400)
+    expect(producers.totalHectareFarm).toBeGreaterThan(100)
+    expect(producers.totalCrops).toBeGreaterThan(1)
+
+  });
+
+
+});

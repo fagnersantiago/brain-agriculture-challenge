@@ -17,3 +17,10 @@ container.registerSingleton<IRuralProcucer>(
   'DeleteProducer',
   RuralProducerRepository,
 );
+
+
+container.registerSingleton<IRuralProcucer>(
+  'ListDataDashbordProducer',
+  RuralProducerRepository,
+);
+

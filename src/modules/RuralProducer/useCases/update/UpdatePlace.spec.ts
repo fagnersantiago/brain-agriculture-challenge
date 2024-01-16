@@ -3,18 +3,18 @@ import { AppError } from "../../../../shared/error/AppError";
 import { RuralProducerRepositoryInMemory } from "../../repository/inMemory/RuralProducerRepositoryInMemory";
 import { UpdateRuralProducer } from "./UpdateRuralProducer.UseCase";
 
-let updateRuralProducer: UpdateRuralProducer;
+let sut: UpdateRuralProducer;
 let ruralProducerInMemory: RuralProducerRepositoryInMemory;
 
 describe("Unit test Update Rural producer", () => {
   beforeEach(() => {
     ruralProducerInMemory = new RuralProducerRepositoryInMemory();
-    updateRuralProducer = new UpdateRuralProducer(ruralProducerInMemory);
+    sut = new UpdateRuralProducer(ruralProducerInMemory);
 
   });
 
   it("Should able update rural producer ", async () => {
-    const sut = {
+    const producer = {
       id:"fake-id-123",
       producerName: 'John doe',
       cpfCnpj: '12345678915415',
@@ -27,9 +27,9 @@ describe("Unit test Update Rural producer", () => {
       plantedCrops: ['SOJA', 'CANA-DE-AÇUCAR'],
     };
 
-    const ruralProducer =  await ruralProducerInMemory.create(sut)
+    const ruralProducer =  await ruralProducerInMemory.create(producer)
    
-    const updatedRuralProducer = await updateRuralProducer.execute({
+    const updatedRuralProducer = await sut.execute({
       id: ruralProducer.id,
       producerName: ruralProducer.producerName,
       cpfCnpj: ruralProducer.cpfCnpj,
@@ -53,7 +53,7 @@ describe("Unit test Update Rural producer", () => {
 
   it("Should throw an error if rural producer does not exist", async () => {
     try {
-      await updateRuralProducer.execute({
+      await sut.execute({
         id: "non-existing-id",
         producerName: 'John doe',
         cpfCnpj: '12345678915415',

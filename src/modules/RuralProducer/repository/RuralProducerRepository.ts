@@ -45,6 +45,13 @@ class RuralProducerRepository implements IRuralProcucer {
 
     return ruralProducerExists;
   }
+
+  async findAllProducer():Promise<RuralProducer[] | void>{
+      return await prisma.ruralProducer.findMany()  
+ 
+ 
+
+  }
   async findById(id: string): Promise<null | RuralProducer> {
     const ruralProducerExists = await prisma.ruralProducer.findUnique({
       where: { id },
@@ -68,6 +75,15 @@ class RuralProducerRepository implements IRuralProcucer {
     await prisma.ruralProducer.delete({
       where: { id: id },
     });
+  }
+  async calculateTotalCropsCount():Promise <number> {
+   return await prisma.ruralProducer.count() 
+  }
+  async calculateTotalFarmArea():Promise <number>{
+    return await prisma.ruralProducer.count() 
+  }
+  async calculateTotalHectare():Promise <number> {
+    return await prisma.ruralProducer.count() 
   }
 }
 

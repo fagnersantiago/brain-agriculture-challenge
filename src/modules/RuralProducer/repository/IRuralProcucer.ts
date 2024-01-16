@@ -9,6 +9,10 @@ interface IRuralProcucer {
   update(data: IUpdateRuralProducerDTO): Promise<RuralProducer>;
   delete(id: string): Promise<void>;
   findByCpfCnpj(cpfCnpj: string): Promise<RuralProducer | null>;
+  findAllProducer():Promise<RuralProducer[] | void>
+  calculateTotalFarmArea():Promise<number>
+  calculateTotalHectare():Promise<number>
+  calculateTotalCropsCount():Promise<number>
 }
 
 export { IRuralProcucer };
