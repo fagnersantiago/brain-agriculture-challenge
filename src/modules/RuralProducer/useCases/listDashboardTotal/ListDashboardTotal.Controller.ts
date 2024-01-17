@@ -1,16 +1,24 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { container } from 'tsyringe';
 import { ListDashboardTotalProducerUseCase } from './ListDashboardTotal.UseCase';
 
 class ListDashboradTotalProducerController {
-  async handle(request: Request, response: Response): Promise<Response> {
-   
+  async handle(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<Response> {
+    try {
+      const ruralProducerUsecase = container.resolve(
+        ListDashboardTotalProducerUseCase,
+      );
 
-    const ruralProducerUsecase = container.resolve(ListDashboardTotalProducerUseCase);
+      const ruralProducer = await ruralProducerUsecase.execute();
 
-    const ruralProducer = await ruralProducerUsecase.execute();
-
-    return response.status(201).json(ruralProducer);
+      return response.status(201).json(ruralProducer);
+    } catch (error) {
+      next(error);
+    }
   }
 }
 

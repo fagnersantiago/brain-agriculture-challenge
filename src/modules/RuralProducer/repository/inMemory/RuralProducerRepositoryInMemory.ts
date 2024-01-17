@@ -4,10 +4,9 @@ import { RuralProducer } from '../../infra/prisma/entities/RuralProducer';
 import { IUpdateRuralProducerDTO } from '../../dto/IUpdateRuralProducer.DTO';
 import { Crop } from '../../infra/prisma/entities/Crop';
 
-
 class RuralProducerRepositoryInMemory implements IRuralProducer {
   private ruralProducerRepository: RuralProducer[] = [];
-  private cropRepository: Crop[]=[]
+  private cropRepository: Crop[] = [];
 
   async create({
     producerName,
@@ -18,7 +17,7 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
     totalFarmArea,
     agriculturalArea,
     vegetationArea,
-    plantedCrops
+    plantedCrops,
   }: IRuralProducerDTO): Promise<RuralProducer> {
     const ruralProducer = new RuralProducer(
       producerName,
@@ -32,23 +31,27 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
       plantedCrops,
     );
 
-    const crop = new Crop(
-     ruralProducer.plantedCrops,
-     ruralProducer.id
-    )
-   this.ruralProducerRepository.push(ruralProducer);
-   this.cropRepository.push(crop)
+    const crop = new Crop(ruralProducer.plantedCrops, ruralProducer.id);
+    this.ruralProducerRepository.push(ruralProducer);
+    this.cropRepository.push(crop);
+
+    return { ...ruralProducer, ...crop.plantedCrops };
+  }
+  async findById(id: string): Promise<RuralProducer | null> {
+    const foundProducer = this.ruralProducerRepository.find(producer => {
+      return producer.id === id;
+    });
+    if (!foundProducer) {
+      return null;
+    }
   
-   return    {... ruralProducer, ...crop }
+    return foundProducer;
   }
-
-  async findById(id: string): Promise<RuralProducer> {
-    return await this.ruralProducerRepository.find(find => find.id === id);
-  }
-
+  
+  
+  
   async findAllProducer(): Promise<RuralProducer[] | void> {
     const allProducer = this.ruralProducerRepository;
-
     return allProducer;
   }
 
@@ -74,12 +77,10 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
   }
 
   async delete(id: string): Promise<void> {
-    const deleted = this.ruralProducerRepository.findIndex(
+  const ruralDeleted =   this.ruralProducerRepository.findIndex(
       find => find.id === id,
     );
-    if (deleted >= 0) {
-      this.ruralProducerRepository.slice(deleted, 1);
-    }
+      this.ruralProducerRepository.splice(ruralDeleted, 1);
   }
 
   async calculateTotalCrops(): Promise<number> {
@@ -90,7 +91,6 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
     return totalCropsCount;
   }
 
-
   async calculateTotalHectare(): Promise<number> {
     const totalHectareFarm = this.ruralProducerRepository.reduce(
       (total, farm) => total + farm.totalFarmArea,
@@ -99,10 +99,8 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
 
     return totalHectareFarm;
   }
-  
-   
 
-  async calculateTotalFarms():Promise<number> {
+  async calculateTotalFarms(): Promise<number> {
     const totalFarm = this.ruralProducerRepository.reduce(
       (total, farm) => total + farm.totalFarmArea,
       0,
@@ -110,20 +108,18 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
 
     return totalFarm;
   }
-  
-  async calculateSoilUsed(): Promise<object> {
 
-    const usedSoilQuantity = this.ruralProducerRepository.filter((filter) => {
-      return filter.plantedCrops
-    
-    })
-    const countCulture: Record<string, { total: number }> = usedSoilQuantity.reduce((acc, { plantedCrops }) => {
-      plantedCrops.forEach((value) => {
-        acc[value] = { total: (acc[value]?.total || 0) + 1 };
-      });
-      return acc;
-    }, {});
-    
+  async calculateSoilUsed(): Promise<object> {
+    const usedSoilQuantity = this.ruralProducerRepository.filter(filter => {
+      return filter.plantedCrops;
+    });
+    const countCulture: Record<string, { total: number }> =
+      usedSoilQuantity.reduce((acc, { plantedCrops }) => {
+        plantedCrops.forEach(value => {
+          acc[value] = { total: (acc[value]?.total || 0) + 1 };
+        });
+        return acc;
+      }, {});
 
     return countCulture;
   }

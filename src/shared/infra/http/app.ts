@@ -11,16 +11,20 @@ app.use(router);
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
-    if (err instanceof AppError) {
-      return response.status(Number(err.statusCode)).json({
-        message: err.message,
-      });
-    }
+    try {
+      if (err instanceof AppError) {
+        return response.status(Number(err.statusCode)).json({
+          message: err.message,
+        });
+      }
 
-    return response.status(500).json({
-      status: 'error',
-      message: `internal error - ${err.message}`,
-    });
+      return response.status(500).json({
+        status: 'error',
+        message: `internal error - ${err.message}`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   },
 );
 

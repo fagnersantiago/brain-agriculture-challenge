@@ -80,7 +80,7 @@ class RuralProducerRepository implements IRuralProducer {
   }
 
   async findById(id: string): Promise<null | RuralProducer> {
-    const ruralProducerExists = await prisma.ruralProducer.findFirst({
+    const ruralProducerExists = await prisma.ruralProducer.findUnique({
       where: { id },
     });
 
@@ -117,9 +117,16 @@ class RuralProducerRepository implements IRuralProducer {
   }
 
   async delete(id: string): Promise<void> {
-    await prisma.ruralProducer.delete({
+
+    await prisma.crop.deleteMany({
+      where:{ id_rural_producer: id}
+ 
+     })
+     await prisma.ruralProducer.delete({
       where: { id: id },
+ 
     });
+   
   }
 
 async calculateTotalFarms() {

@@ -1,20 +1,27 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { container } from 'tsyringe';
-import { UpdateRuralProducer } from './UpdateRuralProducer.UseCase';
+import { UpdateRuralProducerUseCase } from './UpdateRuralProducer.UseCase';
 
 class UpdateProducerController {
-  async handle(request: Request, response: Response): Promise<Response> {
-    const { data } = request.body;
-    const { id } = request.params;
-console.log("dataController", data)
-    const updateRuralProducerUseCase = container.resolve(UpdateRuralProducer);
+  async handle(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<Response> {
+    try {
+      const { data } = request.body;
+      const { id } = request.params;
+      const updateRuralProducerUseCase = container.resolve(UpdateRuralProducerUseCase);
 
-    const update = await updateRuralProducerUseCase.execute({
-      id,
-      ...data,
-    });
+      const update = await updateRuralProducerUseCase.execute({
+        id,
+        ...data,
+      });
 
-    return response.status(201).json(update);
+      return response.status(201).json(update);
+    } catch (error) {
+      next(error);
+    }
   }
 }
 

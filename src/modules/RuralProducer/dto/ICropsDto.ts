@@ -1,4 +1,4 @@
-export type crops = {
+export interface crops {
   SOJA: string;
   MILHO: string;
   ALGODÃO: string;

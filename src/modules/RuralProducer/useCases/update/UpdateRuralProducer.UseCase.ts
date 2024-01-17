@@ -4,9 +4,10 @@ import { RuralProducer } from '../../infra/prisma/entities/RuralProducer';
 import { IRuralProducer } from '../../repository/IRuralProducer';
 import { IUpdateRuralProducerDTO } from '../../dto/IUpdateRuralProducer.DTO';
 import { AppError } from '../../../../shared/error/AppError';
+import { NotFoundError } from '../../../../shared/error/NotFoundError';
 
 @injectable()
-class UpdateRuralProducer {
+class UpdateRuralProducerUseCase {
   constructor(
     @inject('UpdateRuralProducer')
     private ruralproducerRepository: IRuralProducer,
@@ -14,20 +15,21 @@ class UpdateRuralProducer {
 
   async execute(data: IUpdateRuralProducerDTO): Promise<RuralProducer> {
     try {
-      const ruralProducer = await this.ruralproducerRepository.findById(
+      const producerExists = await this.ruralproducerRepository.findById(
         data.id,
       );
 
-      if (!ruralProducer) {
-        throw new AppError('RuralProducer not Found!');
+      if (!producerExists) {
+        throw new NotFoundError();
       }
 
       const update = await this.ruralproducerRepository.update(data);
 
-      return { ...update, ...data};
+      return { ...update, ...data };
     } catch (error) {
-      throw new AppError(error)
+  
+      throw new AppError(error);
     }
   }
 }
-export { UpdateRuralProducer };
+export { UpdateRuralProducerUseCase };

@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { IRuralProducer } from '../../repository/IRuralProducer';
 import { AppError } from '../../../../shared/error/AppError';
+import { NotFoundError } from '../../../../shared/error/NotFoundError';
 
 @injectable()
 class ListDashboardTotalProducerUseCase {
@@ -15,7 +16,7 @@ class ListDashboardTotalProducerUseCase {
       const producer = await this.ruralProducerRepository.findAllProducer();
 
       if (!producer) {
-        throw new AppError('Not found');
+        throw new NotFoundError()
       }
 
       const totalFarms = await this.ruralProducerRepository.calculateTotalFarms();

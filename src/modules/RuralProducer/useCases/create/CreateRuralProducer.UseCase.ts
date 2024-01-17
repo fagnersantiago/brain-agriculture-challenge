@@ -5,7 +5,9 @@ import { IRuralProducer } from '../../repository/IRuralProducer';
 import { IRuralProducerDTO } from '../../dto/IRuralProducerDTO';
 import { isValidCpfCnpj } from '../../../../shared/utils/IsValidCpfCnpj';
 import { AppError } from '../../../../shared/error/AppError';
-
+import { AlreadyExistsError } from '../../../../shared/error/ProducerAlreadyExistisError';
+import { InvalidCpfCnpjError } from '../../../../shared/error/InvalidCpfCnpjError';
+import { BadRequestError } from '../../../../shared/error/BadRequestError';
 
 @injectable()
 class CreateRuralProducerUseCase {
@@ -15,7 +17,6 @@ class CreateRuralProducerUseCase {
   ) {}
 
   async execute({
-    id,
     producerName,
     cpfCnpj,
     farmName,
@@ -24,22 +25,23 @@ class CreateRuralProducerUseCase {
     totalFarmArea,
     agriculturalArea,
     vegetationArea,
-    plantedCrops
-  }: IRuralProducerDTO,  ): Promise<RuralProducer> {
+    plantedCrops,
+  }: IRuralProducerDTO): Promise<RuralProducer> {
     try {
-      
-      const producerExists = await this.ruralProducerRepository.findByCpfCnpj(cpfCnpj)
-     
-      if(producerExists) {
-        throw new AppError("Producer already exists")
+      const producerExists = await this.ruralProducerRepository.findByCpfCnpj(
+        cpfCnpj,
+      );
+
+      if (producerExists) {
+        throw new AlreadyExistsError();
       }
 
-      if(!isValidCpfCnpj(cpfCnpj)) {
-        throw new AppError("Invalid cpf or cnpj")
+      if (!isValidCpfCnpj(cpfCnpj)) {
+        throw new InvalidCpfCnpjError();
       }
 
-      if(agriculturalArea + vegetationArea > totalFarmArea) {
-         throw new AppError("The sum Agricultural Area and vegetation cannot be greate than total area of the farm")
+      if (agriculturalArea + vegetationArea > totalFarmArea) {
+        throw new BadRequestError();
       }
 
       const ruralProducerCreated = await this.ruralProducerRepository.create({
@@ -50,15 +52,13 @@ class CreateRuralProducerUseCase {
         state,
         totalFarmArea,
         agriculturalArea,
-        vegetationArea, 
-        plantedCrops
-      
-      }
-      );
+        vegetationArea,
+        plantedCrops,
+      });
 
       return ruralProducerCreated;
     } catch (error) {
-    throw new AppError(error)
+      throw new AppError(error);
     }
   }
 }
