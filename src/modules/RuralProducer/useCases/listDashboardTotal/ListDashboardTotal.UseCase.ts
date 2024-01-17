@@ -19,16 +19,16 @@ class ListDashboardTotalProducerUseCase {
         throw new NotFoundError()
       }
 
-      const totalFarms = await this.ruralProducerRepository.calculateTotalFarms();
-      const totalHectareFarm = await this.ruralProducerRepository.calculateTotalHectare();
-      const totalCrops = await this.ruralProducerRepository.calculateTotalCrops();
-      const soilUsed = await this.ruralProducerRepository.calculateSoilUsed();
+      const totalFarmsInQuantitly = await this.ruralProducerRepository. calculateTotalFarmsInQuantitly();
+      const totalFarmInHectare = await this.ruralProducerRepository.calculateTotalFarmInHectare();
+      const pieChartCulture = await this.ruralProducerRepository.pieChartCulture();
+      const pieChartLandUse = await this.ruralProducerRepository.pieChartLandUse();
 
       return {
-        totalFarms,
-        totalHectareFarm,
-        totalCrops,
-        soilUsed,
+        totalFarmsInQuantitly,
+        totalFarmInHectare,
+        pieChartCulture,
+        pieChartLandUse,
       };
     } catch (error) {
       throw new AppError(error)

@@ -55,9 +55,9 @@ describe('Unit test list all Producer Use Case', () => {
 
     const producers = await listRuralProducer.execute();
 
-    expect(producers.totalFarms).toBeGreaterThan(400);
-    expect(producers.totalHectareFarm).toBeGreaterThan(100);
-    expect(producers.totalCrops).toBeGreaterThan(1);
-    expect(producers.soilUsed).toBeDefined();
+    expect(producers.totalFarmsInQuantitly).toBeGreaterThan(400);
+    expect(producers.totalFarmInHectare).toBeGreaterThan(100);
+    expect(producers.pieChartLandUse).toBeGreaterThan(1);
+    expect(producers.pieChartCulture).toBeDefined();
   });
 });

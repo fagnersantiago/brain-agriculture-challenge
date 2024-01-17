@@ -13,10 +13,12 @@ interface IRuralProducer {
   delete(id: string): Promise<void>;
   findByCpfCnpj(cpfCnpj: string): Promise<RuralProducer | null>;
   findAllProducer()
-  calculateTotalHectare():Promise<number>
-  calculateTotalCrops():Promise<object | number>
-  calculateTotalFarms():Promise<number>
-  calculateSoilUsed():Promise<object>
+  calculateTotalFarmInHectare():Promise<number>
+  pieChartCulture():Promise<object | number>
+  calculateTotalFarmsInQuantitly():Promise<number>
+  pieChartLandUse():Promise<object>
+  
+  
 }
 
 export { IRuralProducer };

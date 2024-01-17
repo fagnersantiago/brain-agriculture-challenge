@@ -58,7 +58,7 @@ class RuralProducerRepository implements IRuralProducer {
   }
 
   async findAllProducer() {
-    const getAll = await prisma.ruralProducer.findMany({
+    const getAllProducer = await prisma.ruralProducer.findMany({
       select: {
         producerName: true,
         cpfCnpj: true,
@@ -71,7 +71,7 @@ class RuralProducerRepository implements IRuralProducer {
         plantedCrops: { select: { plantedCrops: true } },
       },
     });
-    return getAll;
+    return getAllProducer;
 
     // const estados = await prisma.produtorRural.groupBy({
     //   by: ['estado'],
@@ -129,11 +129,11 @@ class RuralProducerRepository implements IRuralProducer {
    
   }
 
-async calculateTotalFarms() {
+async calculateTotalFarmsInQuantitly() {
     return await prisma.ruralProducer.count()
   }
 
-  async calculateTotalCrops():Promise<object>{
+  async pieChartCulture():Promise<object>{
     const count =  await prisma.crop.findMany({
       select:{
         plantedCrops: true
@@ -152,7 +152,7 @@ async calculateTotalFarms() {
     return countCulture
   }
 
-  async calculateTotalHectare(): Promise<number> {
+  async calculateTotalFarmInHectare(): Promise<number> {
     const totalHectares = await prisma.ruralProducer.aggregate({
       _sum: {
         totalFarmArea: true,
@@ -160,7 +160,7 @@ async calculateTotalFarms() {
     });
     return totalHectares._sum.totalFarmArea;
   }
-  async calculateSoilUsed():Promise<object> {
+  async pieChartLandUse():Promise<object> {
     const soilUsed = await prisma.ruralProducer.aggregate({
       _sum: {
         agriculturalArea: true,

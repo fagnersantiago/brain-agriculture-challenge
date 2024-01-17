@@ -48,8 +48,6 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
     return foundProducer;
   }
   
-  
-  
   async findAllProducer(): Promise<RuralProducer[] | void> {
     const allProducer = this.ruralProducerRepository;
     return allProducer;
@@ -83,7 +81,7 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
       this.ruralProducerRepository.splice(ruralDeleted, 1);
   }
 
-  async calculateTotalCrops(): Promise<number> {
+  async pieChartCulture(): Promise<number> {
     const totalCropsCount = this.ruralProducerRepository.reduce((acc, farm) => {
       return acc + farm.plantedCrops.length;
     }, 0);
@@ -91,7 +89,7 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
     return totalCropsCount;
   }
 
-  async calculateTotalHectare(): Promise<number> {
+  async calculateTotalFarmInHectare(): Promise<number> {
     const totalHectareFarm = this.ruralProducerRepository.reduce(
       (total, farm) => total + farm.totalFarmArea,
       0,
@@ -100,7 +98,7 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
     return totalHectareFarm;
   }
 
-  async calculateTotalFarms(): Promise<number> {
+  async calculateTotalFarmsInQuantitly(): Promise<number> {
     const totalFarm = this.ruralProducerRepository.reduce(
       (total, farm) => total + farm.totalFarmArea,
       0,
@@ -109,7 +107,7 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
     return totalFarm;
   }
 
-  async calculateSoilUsed(): Promise<object> {
+  async pieChartLandUse(): Promise<object> {
     const usedSoilQuantity = this.ruralProducerRepository.filter(filter => {
       return filter.plantedCrops;
     });
