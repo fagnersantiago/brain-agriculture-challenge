@@ -4,7 +4,6 @@ import { RuralProducer } from '../infra/prisma/entities/RuralProducer';
 import { IRuralProducer } from './IRuralProducer';
 import { IRuralProducerDTO } from '../dto/IRuralProducerDTO';
 import { IUpdateRuralProducerDTO } from '../dto/IUpdateRuralProducer.DTO';
-import { cropsPlanted } from '../dto/ICropsDto';
 
 class RuralProducerRepository implements IRuralProducer {
   async create({
@@ -72,11 +71,6 @@ class RuralProducerRepository implements IRuralProducer {
       },
     });
     return getAllProducer;
-
-    // const estados = await prisma.produtorRural.groupBy({
-    //   by: ['estado'],
-    //   _count: true,
-    // });
   }
 
   async findById(id: string): Promise<null | RuralProducer> {
@@ -117,39 +111,34 @@ class RuralProducerRepository implements IRuralProducer {
   }
 
   async delete(id: string): Promise<void> {
-
     await prisma.crop.deleteMany({
-      where:{ id_rural_producer: id}
- 
-     })
-     await prisma.ruralProducer.delete({
-      where: { id: id },
- 
+      where: { id_rural_producer: id },
     });
-   
+    await prisma.ruralProducer.delete({
+      where: { id: id },
+    });
   }
 
-async calculateTotalFarmsInQuantitly() {
-    return await prisma.ruralProducer.count()
+  async calculateTotalFarmsInQuantitly() {
+    return await prisma.ruralProducer.count();
   }
 
-  async pieChartCulture():Promise<object>{
-    const count =  await prisma.crop.findMany({
-      select:{
-        plantedCrops: true
-      }
-    })
+  async pieChartCulture(): Promise<object> {
+    const count = await prisma.crop.findMany({
+      select: {
+        plantedCrops: true,
+      },
+    });
 
-    const countCulture: Record<string, {total: number}> = count.reduce((acc, { plantedCrops }) => {
-      plantedCrops.forEach((value) => {
-    
-        acc[value] = { total: (acc[value] || 0) + 1 };
+    const countCulture: object = count.reduce((acc, { plantedCrops }) => {
+      plantedCrops.forEach(value => {
+        acc[value] = (acc[value] || 0) + 1;
       });
-   
+
       return acc;
     }, {});
-    
-    return countCulture
+
+    return countCulture;
   }
 
   async calculateTotalFarmInHectare(): Promise<number> {
@@ -160,16 +149,29 @@ async calculateTotalFarmsInQuantitly() {
     });
     return totalHectares._sum.totalFarmArea;
   }
-  async pieChartLandUse():Promise<object> {
+
+  async pieChartLandUse(): Promise<object> {
     const soilUsed = await prisma.ruralProducer.aggregate({
       _sum: {
         agriculturalArea: true,
         vegetationArea: true,
       },
     });
-    return soilUsed._sum
+    return soilUsed._sum;
   }
 
+  async pieChartByState(): Promise<object> {
+    const state = await prisma.ruralProducer.groupBy({
+      by: ['state'],
+      _count: true,
+    });
+    const formattedResult = state.map(item => ({
+      state: item.state,
+      total: item._count,
+    }));
+
+    return formattedResult;
+  }
 }
 
 export { RuralProducerRepository };

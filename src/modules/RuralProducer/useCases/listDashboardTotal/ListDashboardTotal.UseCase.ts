@@ -23,12 +23,14 @@ class ListDashboardTotalProducerUseCase {
       const totalFarmInHectare = await this.ruralProducerRepository.calculateTotalFarmInHectare();
       const pieChartCulture = await this.ruralProducerRepository.pieChartCulture();
       const pieChartLandUse = await this.ruralProducerRepository.pieChartLandUse();
+      const pieChartByState = await this.ruralProducerRepository.pieChartByState()
 
       return {
         totalFarmsInQuantitly,
         totalFarmInHectare,
         pieChartCulture,
         pieChartLandUse,
+        pieChartByState
       };
     } catch (error) {
       throw new AppError(error)

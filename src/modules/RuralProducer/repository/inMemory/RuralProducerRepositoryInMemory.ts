@@ -44,10 +44,10 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
     if (!foundProducer) {
       return null;
     }
-  
+
     return foundProducer;
   }
-  
+
   async findAllProducer(): Promise<RuralProducer[] | void> {
     const allProducer = this.ruralProducerRepository;
     return allProducer;
@@ -75,18 +75,32 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
   }
 
   async delete(id: string): Promise<void> {
-  const ruralDeleted =   this.ruralProducerRepository.findIndex(
+    const ruralDeleted = this.ruralProducerRepository.findIndex(
       find => find.id === id,
     );
-      this.ruralProducerRepository.splice(ruralDeleted, 1);
+    this.ruralProducerRepository.splice(ruralDeleted, 1);
   }
 
-  async pieChartCulture(): Promise<number> {
-    const totalCropsCount = this.ruralProducerRepository.reduce((acc, farm) => {
-      return acc + farm.plantedCrops.length;
-    }, 0);
+  async pieChartCulture(): Promise<object | number> {
+    const allProducers = await this.ruralProducerRepository.filter(() => true);
 
-    return totalCropsCount;
+    const countCulture: Record<string, number> = {};
+
+    for (const producer of allProducers) {
+      const cultures = producer.plantedCrops;
+
+      if (cultures) {
+        for (const culture of cultures) {
+          if (countCulture[culture]) {
+            countCulture[culture]++;
+          } else {
+            countCulture[culture] = 1;
+          }
+        }
+      }
+    }
+
+    return countCulture;
   }
 
   async calculateTotalFarmInHectare(): Promise<number> {
@@ -107,19 +121,38 @@ class RuralProducerRepositoryInMemory implements IRuralProducer {
     return totalFarm;
   }
 
-  async pieChartLandUse(): Promise<object> {
-    const usedSoilQuantity = this.ruralProducerRepository.filter(filter => {
-      return filter.plantedCrops;
-    });
-    const countCulture: Record<string, { total: number }> =
-      usedSoilQuantity.reduce((acc, { plantedCrops }) => {
-        plantedCrops.forEach(value => {
-          acc[value] = { total: (acc[value]?.total || 0) + 1 };
-        });
-        return acc;
-      }, {});
+  async pieChartLandUse(): Promise<number> {
+    const totalUseLand = this.ruralProducerRepository.reduce((acc, farm) => {
+      return acc + farm.plantedCrops.length;
+    }, 0);
+    return totalUseLand;
+  }
 
-    return countCulture;
+  async pieChartByState(): Promise<object> {
+    const allStateProducer = await this.ruralProducerRepository.filter(
+      () => true,
+    );
+
+    const countState: Record<string, number> = {};
+
+    for (const producer of allStateProducer) {
+      const state = producer.state;
+
+      if (state) {
+        if (countState[state]) {
+          countState[state]++;
+        } else {
+          countState[state] = 1;
+        }
+      }
+    }
+
+    const result = Object.entries(countState).map(([state, total]) => ({
+      state,
+      total,
+    }));
+
+    return result;
   }
 }
 

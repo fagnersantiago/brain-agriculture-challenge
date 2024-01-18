@@ -16,7 +16,8 @@ interface IRuralProducer {
   calculateTotalFarmInHectare():Promise<number>
   pieChartCulture():Promise<object | number>
   calculateTotalFarmsInQuantitly():Promise<number>
-  pieChartLandUse():Promise<object>
+  pieChartLandUse():Promise<object | number>
+  pieChartByState():Promise<object | number>
   
   
 }
