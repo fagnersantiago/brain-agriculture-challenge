@@ -78,6 +78,44 @@ Este projeto consiste em um teste técnico que visa a criação de uma api de ca
 }
 ```
 
+**Retornos de Erro:**
+  - **Conflito (409):**
+    ```json
+    {
+      "message": "Producer already exists",
+      "statusCode": 409
+    }
+    ```
+  - **Não Encontrado (404):**
+    ```json
+    {
+      "message": "Producer Not Found",
+      "statusCode": 404
+    }
+    ```
+  - **Bad Request (400):**
+    - CPF ou CNPJ inválido:
+      ```json
+      {
+        "message": "Invalid CPF OR CNPJ",
+        "statusCode": 400
+      }
+      ```
+    - Soma da Área Agrícultáve e Vegetação maior que a Área Total da Fazenda:
+      ```json
+      {
+        "message": "The sum Agricultural Area and vegetation cannot be greater than the total area of the farm",
+        "statusCode": 400
+      }
+      ```
+  - **Erro Interno do Servidor (500):**
+    ```json
+    {
+      "message": "Internal Server Error",
+      "statusCode": 500
+    }
+    ```
+
 ## Execução do Projeto
 
 Para executar as migrações, execute o seguinte comando:
@@ -99,3 +137,5 @@ yarn dev
 ```
 
 Certifique-se de ter todas as dependências instaladas antes de iniciar o projeto.
+
+
