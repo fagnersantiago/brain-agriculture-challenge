@@ -9,11 +9,11 @@ const ruralProducerRouter = Router();
 const createruralProducerController = new CreateRuralProducerController();
 const updateRuralProducerController = new UpdateProducerController();
 const deleteRuralProducer = new DeleteRuralProducerController();
-const listDataDashbordProducer = new ListDashboradTotalProducerController()
+const listDataDashbordProducer = new ListDashboradTotalProducerController();
 
-ruralProducerRouter.post('/', createruralProducerController.handle);
-ruralProducerRouter.put("/update/:id",updateRuralProducerController.handle);
-ruralProducerRouter.delete("/delete/:id", deleteRuralProducer.handle)
-ruralProducerRouter.get('/dashboard', listDataDashbordProducer.handle)
+ruralProducerRouter.post('/create', createruralProducerController.handle);
+ruralProducerRouter.put('/update/:id', updateRuralProducerController.handle);
+ruralProducerRouter.delete('/delete/:id', deleteRuralProducer.handle);
+ruralProducerRouter.get('/dashboard', listDataDashbordProducer.handle);
 
 export { ruralProducerRouter };

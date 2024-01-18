@@ -1,44 +1,100 @@
-# Teste - Brain Agriculture
+# Projeto Cadastro de Produtor Rural
 
-O teste tem como objetivo acurar as habilidades do candidato em resolver alguns problemas relacionados à lógica de programação, regra de negócio e orientação à objetos.
+Este projeto consiste em um teste técnico que visa a criação de uma api de cadastro de produtor rural. O mesmo foi desenvolvido utilizando as seguintes tecnologias:
 
-O mesmo consiste em um cadastro de produtor rural com os seguintes dados:
+- Node.js
+- TypeScript
+- Express.js
+- Prisma
+- Docker
+- Tsyringe
+- Yarn
 
-1.  CPF ou CNPJ
-2.  Nome do produtor
-3.  Nome da Fazenda
-4.  Cidade
-5.  Estado
-6.  Área total em hectares da fazenda
-7.  Área agricultável em hectares
-8.  Área de vegetação em hectares
-9.  Culturas plantadas (Soja, Milho, Algodão, Café, Cana de Açucar)
+## Rotas
 
-# Requisitos de negócio
+### Cadastrar Produtor Rural
 
-- O usuário deverá ter a possibilidade de cadastrar, editar, e excluir produtores rurais.
-- O sistema deverá validar CPF e CNPJ digitados incorretamente.
-- A soma de área agrícultável e vegetação, não deverá ser maior que a área total da fazenda
-- Cada produtor pode plantar mais de uma cultura em sua Fazenda.
-- A plataforma deverá ter um Dashboard que exiba:
-  - Total de fazendas em quantidade
-  - Total de fazendas em hectares (área total)
-  - Gráfico de pizza por estado.
-  - Gráfico de pizza por cultura.
-  - Gráfico de pizza por uso de solo (Área agricultável e vegetação)
+- **Método:** POST
+- **URL:** http://localhost:3333/ruralProducer/create
+- **Corpo da Requisição:**
+  ```json
+  {
+    "cpfCnpj": "string",
+    "producerName": "string",
+    "farmName": "string",
+    "city": "string",
+    "state": "string",
+    "totalFarmArea": 0,
+    "agriculturalArea": 0,
+    "vegetationArea": 0,
+    "plantedCrops": ["string"]
+  }
+  ```
 
-# Requisitos técnicos
+### Excluir Produtor Rural
 
-- O desenvolvedor front-end deverá utilizar:
+- **Método:** DELETE
+- **URL:** http://localhost:3333/ruralProducer/delete/:id
 
-  - [ReactJS](http://reactjs.org);
-  - [Redux](https://redux.js.org/) para controlar o estado da aplicação.
-    - Caso entenda que faça sentido, utilize [Context API](https://reactjs.org/docs/context.html) como recurso adicional ou substituto ao Redux (Opcional)
-  - Crie pelo menos um teste unitário por componente (Opcional)
-  - A criação das estruturas de dados "mockados" faz parte da avaliação.
+### Editar Produtor Rural
 
-- O desenvolvedor back-end deve:
-  - Salvar os dados em um banco de dados Postgres usando o NodeJS como layer de Backend, e entregar os endpoints para cadastrar, editar, e excluir produtores rurais, além do endpoint que retorne os totais para o dashboard.
-  - A criação das estruturas de dados "mockados" faz parte da avaliação.
-- O desenvolvedor full-stack deve realizar ambos, e concluir a integração.
-  > Não envie a solução como anexo, suba os fontes para seu Github (ou outro repositório) e envie o link para o avaliador.
+- **Método:** PUT
+- **URL:** http://localhost:3333/ruralProducer/update/:id
+
+### Dashboard - Obter Dados
+
+- **Método:** GET
+- **URL:** http://localhost:3333/ruralProducer/dashboard
+
+**Exemplo de Retorno:**
+```json
+{
+  "totalFarmsInQuantity": 5,
+  "totalFarmInHectare": 54300,
+  "pieChartCulture": {
+    "MILHO": 2,
+    "CANA-DE-AÇÚCAR": 2,
+    "CAFÉ": 2,
+    "SOJA": 2,
+    "ALGODÃO": 1,
+    "CANA-DE-AÇUCAR": 1
+  },
+  "pieChartLandUse": {
+    "agriculturalArea": 10100,
+    "vegetationArea": 10100
+  },
+  "pieChartByState": [
+    {
+      "state": "Acre",
+      "total": 0
+    },
+    {
+      "state": "ALAGOAS",
+      "total": 1
+    },
+    // ... (outros estados)
+  ]
+}
+```
+
+## Execução do Projeto
+
+Para executar as migrações, execute o seguinte comando:
+
+```bash
+yarn prisma:migrate
+```
+
+Para popular as tabelas, execute o comando:
+
+```bash
+yarn seed
+```
+
+Para executar o projeto em ambiente de desenvolvimento, utilize o comando:
+
+```bash
+yarn dev
+```
+
+Certifique-se de ter todas as dependências instaladas antes de iniciar o projeto.

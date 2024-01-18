@@ -6,6 +6,7 @@
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
     "test": "jest",
     "prisma:generate": "prisma generate",
+    "prisma:migrate": "npx prisma migrate dev",
     "seed":"ts-node --transpile-only ./src/modules/RuralProducer/infra/prisma/seeds/index.ts"
   },
   "repository": "https://github.com/fagnersantiago/brain-agriculture-challenge.git",
