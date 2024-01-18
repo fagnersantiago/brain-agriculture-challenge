@@ -9,6 +9,7 @@ Este projeto consiste em um teste técnico que visa a criação de uma api de ca
 - Docker
 - Tsyringe
 - Yarn
+- Banco de Dados Postgresql
 
 ## Rotas
 
