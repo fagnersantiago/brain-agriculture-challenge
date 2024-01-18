@@ -4,6 +4,7 @@ import { RuralProducer } from '../infra/prisma/entities/RuralProducer';
 import { IRuralProducer } from './IRuralProducer';
 import { IRuralProducerDTO } from '../dto/IRuralProducerDTO';
 import { IUpdateRuralProducerDTO } from '../dto/IUpdateRuralProducer.DTO';
+import { defaultStates } from '../../../shared/utils/defaultStates';
 
 class RuralProducerRepository implements IRuralProducer {
   async create({
@@ -160,17 +161,29 @@ class RuralProducerRepository implements IRuralProducer {
     return soilUsed._sum;
   }
 
-  async pieChartByState(): Promise<object> {
-    const state = await prisma.ruralProducer.groupBy({
+  async pieChartByState(): Promise<object[]> {
+    const databaseResults = await prisma.ruralProducer.groupBy({
       by: ['state'],
       _count: true,
     });
-    const formattedResult = state.map(item => ({
-      state: item.state,
-      total: item._count,
-    }));
 
-    return formattedResult;
+    databaseResults.map(item => item.state.toUpperCase());
+
+    const mergedResults = defaultStates.map(state => {
+      const databaseResult = databaseResults.find(
+        item => item.state.toUpperCase() === state.toUpperCase(),
+      );
+
+      if (databaseResult)
+        return {
+          state: databaseResult.state.toUpperCase(),
+          total: databaseResult._count,
+        };
+
+      if (!databaseResult) return { state: state, total: 0 };
+    });
+
+    return mergedResults;
   }
 }
 
