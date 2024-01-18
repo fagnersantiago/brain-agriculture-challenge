@@ -54,7 +54,6 @@ Este projeto consiste em um teste técnico que visa a criação de uma api de ca
   "totalFarmInHectare": 54300,
   "pieChartCulture": {
     "MILHO": 2,
-    "CANA-DE-AÇÚCAR": 2,
     "CAFÉ": 2,
     "SOJA": 2,
     "ALGODÃO": 1,
