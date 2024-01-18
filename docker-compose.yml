@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  database:
+    image: 'bitnami/postgresql:latest'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=brain-agriculture
+    volumes:
+      - pgdata:/data/postgres     
+
+
