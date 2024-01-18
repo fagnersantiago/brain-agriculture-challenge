@@ -77,7 +77,8 @@ Este projeto consiste em um teste técnico que visa a criação de uma api de ca
 }
 ```
 
-**Retornos de Erro:**
+##Retornos de Erros:
+  
   - **Conflito (409):**
     ```json
     {
