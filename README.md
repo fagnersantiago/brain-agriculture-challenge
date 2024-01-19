@@ -136,6 +136,12 @@ Para executar o projeto em ambiente de desenvolvimento, utilize o comando:
 yarn dev
 ```
 
+Para rodar os testes unitários, execute o comando:
+
+```bash
+yarn seed
+```
+
 Certifique-se de ter todas as dependências instaladas antes de iniciar o projeto.
 
 
