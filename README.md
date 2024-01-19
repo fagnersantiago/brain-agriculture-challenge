@@ -139,7 +139,7 @@ yarn dev
 Para rodar os testes unitários, execute o comando:
 
 ```bash
-yarn seed
+yarn test
 ```
 
 Certifique-se de ter todas as dependências instaladas antes de iniciar o projeto.
